@@ -1,6 +1,6 @@
-import java.util.Scanner;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
@@ -25,8 +25,8 @@ public class Main {
 			}
 		} while(n >= 0);
 
-		double mean = sdOrMean(list, 0);
-		double stdDev = sdOrMean(list, mean);
+		final double mean = standardDeviation0(list, 0);
+		final double stdDev = standardDeviation0(list, mean);
 
 		print("The mean of your list is " + mean + ", and the standard deviation of your list is " + stdDev + "");
 
@@ -36,13 +36,6 @@ public class Main {
 	/** convenience function because java can suck sometimes */
 	public static void print(Object o) {
 		System.out.println(o);
-	}
-
-	public static int avg(Iterable<Integer> list) {
-		int sum = 0;
-		for(int num : list)
-			sum += num;
-		return sum;
 	}
 
 	public static long pow(final int number, int power) {
@@ -69,8 +62,19 @@ public class Main {
 		return output;
 	}
 
-	public static double sdOrMean(Iterable<Double> list, double mean) {
+	public static double standardDeviation(Iterable<Double> list) {
+		return standardDeviation0(list, standardDeviation0(list, 0));
+	}
 
+	public static double standardDeviation0(double[] list, double mean) {
+		final List<Double> passableList = new ArrayList<>();
+		for(double d : list)
+			passableList.add(d);
+		return standardDeviation0(passableList, mean);
+	}
+
+	/** First pass calculates average, second pass calculates standard deviation */
+	public static double standardDeviation0(Iterable<Double> list, double mean) {
 		double sum = 0;
 		int amt = 0;
 		for(double num : list) {
